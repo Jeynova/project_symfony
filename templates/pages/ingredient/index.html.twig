@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma page ingredients{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% if not ingredients.items is same as([]) %}
+            <h1>Mes ingredients</h1>
+            <div class="count">
+                {{ ingredients.getTotalItemCount}} ingredients en base de données
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col" {% if ingredients.isSorted('a.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(ingredients, 'Nom', 'a.name') }}</th>
+                    <th scope="col" {% if ingredients.isSorted('a.price') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(ingredients, 'Prix', 'a.price') }}</th>
+                    <th scope="col" {% if ingredients.isSorted('a.carbonin') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(ingredients, 'Creation', 'a.carbonin') }}</th>
+                    </tr>
+                </thead>
+                    {% for item in ingredients %}
+                <tbody>
+                    <tr class="table-success" {% if loop.index is odd %}class="color"{% endif %}>
+                        <th scope="row">{{item.name}}</th>
+                        <td>{{item.price}}</td>
+                        <td>{{item.carbonin | date("d/m/Y")}}</td>
+                    </tr>
+                </tbody>
+                    {% endfor %}
+            </table>
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(ingredients) }}
+            </div>
+            {% else %}
+            <div class="count">
+                Aucun ingredients en base de données
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

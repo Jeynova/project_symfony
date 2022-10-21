@@ -1,0 +1,28 @@
+{% extends 'base.html.twig'%}
+
+    {% block body %}
+        <div class="container">
+            <div>Creation d'un ingredient</div>
+
+            {{ form_start(form) }}
+                <div class="form-group row">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.name) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.price) }}
+                    {{ form_widget(form.price) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.price) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_row(form.submit) }}
+                </div>
+            {{ form_end(form) }}
+
+        </div>
+    {% endblock %}
