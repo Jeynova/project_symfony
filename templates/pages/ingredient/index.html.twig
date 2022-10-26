@@ -4,17 +4,24 @@
 
 {% block body %}
     <div class="container mt-4">
+        {% for message in app.flashes('success') %}
+            <div class="alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% if not ingredients.items is same as([]) %}
             <h1>Mes ingredients</h1>
             <div class="count">
                 {{ ingredients.getTotalItemCount}} ingredients en base de données
             </div>
+            <a href="{{ path('ingredient.new') }}" class="btn btn-primary">Créer un ingredient</a>
             <table class="table table-hover">
                 <thead>
                     <tr>
                     <th scope="col" {% if ingredients.isSorted('a.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(ingredients, 'Nom', 'a.name') }}</th>
                     <th scope="col" {% if ingredients.isSorted('a.price') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(ingredients, 'Prix', 'a.price') }}</th>
                     <th scope="col" {% if ingredients.isSorted('a.carbonin') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(ingredients, 'Creation', 'a.carbonin') }}</th>
+                    <th scope="col">Actions</th>
                     </tr>
                 </thead>
                     {% for item in ingredients %}
@@ -23,6 +30,7 @@
                         <th scope="row">{{item.name}}</th>
                         <td>{{item.price}}</td>
                         <td>{{item.carbonin | date("d/m/Y")}}</td>
+                        <td><a class="btn btn-info mt-4" href="{{ path('ingredient.edit', {id : item.id}) }}" >Modifier</a>{# <div {{ stimulus_controller('delete-html') }}> #} <a class="btn btn-warning mt-4" href="{{ path('ingredient.delete', {id : item.id}) }}" onclick="return confirm('Voulez vous vraiment effacer cet element ?')"{# {{ stimulus_action('delete-html', 'delete') }} #}>Supprimer</a>{# </div> #}</td>
                     </tr>
                 </tbody>
                     {% endfor %}
@@ -36,5 +44,22 @@
             </div>
         {% endif %}
     </div>
+
+    <div {{ stimulus_controller('delete-html') }}>
+        <button {{ stimulus_action('delete-html', 'helloworld') }}>
+            Greet
+        </button>
+
+    </div>
+
+    <div {{ stimulus_controller('say-hello') }}>
+    <input type="text" {{ stimulus_target('say-hello', 'name') }}>
+
+    <button {{ stimulus_action('say-hello', 'greet') }}>
+        Greet
+    </button>
+
+    <div {{ stimulus_target('say-hello', 'output') }}></div>
+</div>
 
 {% endblock %}

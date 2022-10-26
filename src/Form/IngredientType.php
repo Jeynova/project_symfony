@@ -47,7 +47,7 @@ class IngredientType extends AbstractType
                 "attr"  =>  [
                     "class" =>'btn btn-primary',
                 ],
-                "label" =>  "Ajouter ingredient",
+                "label" =>  "Confirmer",
             ])
         ;
     }
