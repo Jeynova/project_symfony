@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTimeImmutable;
 
 #[UniqueEntity('name')]
 #[ORM\HasLifecycleCallbacks]
@@ -52,11 +53,11 @@ class Receipe
     #[ORM\Column]
     private ?bool $isfavorite = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $createdate = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $modifyat = null;
 
@@ -70,7 +71,7 @@ class Receipe
         $this->modifyat = new \DateTimeImmutable();
     }
 
-    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function setModifyValue(){
         $this->modifyat = new \DateTimeImmutable();
     }
@@ -164,24 +165,24 @@ class Receipe
         return $this;
     }
 
-    public function getCreatedate(): ?\DateTimeInterface
+    public function getCreatedate(): ?\DateTimeImmutable
     {
         return $this->createdate;
     }
 
-    public function setCreatedate(\DateTimeInterface $createdate): self
+    public function setCreatedate(\DateTimeImmutable $createdate): self
     {
         $this->createdate = $createdate;
 
         return $this;
     }
 
-    public function getModifyat(): ?\DateTimeInterface
+    public function getModifyat(): ?\DateTimeImmutable
     {
         return $this->modifyat;
     }
 
-    public function setModifyat(\DateTimeInterface $modifyat): self
+    public function setModifyat(\DateTimeImmutable $modifyat): self
     {
         $this->modifyat = $modifyat;
 

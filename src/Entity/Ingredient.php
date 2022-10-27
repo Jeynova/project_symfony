@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 #[UniqueEntity('name')]
@@ -28,9 +29,9 @@ class Ingredient
     #[Assert\NotNull()]
     private ?float $price = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Assert\NotNull()]
-    private ?\DateTimeInterface $carbon_in = null;
+    private ?DateTimeImmutable $carbon_in = null;
 
     /**
      * 
@@ -39,7 +40,7 @@ class Ingredient
      */
     public function __construct(){
 
-        $this->carbon_in = new \DateTimeImmutable();
+        $this->carbon_in = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -71,12 +72,12 @@ class Ingredient
         return $this;
     }
 
-    public function getCarbonIn(): ?\DateTimeInterface
+    public function getCarbonIn(): ?DateTimeImmutable
     {
         return $this->carbon_in;
     }
 
-    public function setCarbonIn(\DateTimeInterface $carbon_in): self
+    public function setCarbonIn(?DateTimeImmutable $carbon_in): self
     {
         $this->carbon_in = $carbon_in;
 

@@ -1,3 +1,19 @@
 body {
     background-color: lightgray;
 }
+
+.difficult_1{
+    background-color:#2196F3 !important;
+}
+.difficult_2{
+    background-color:#4CAF50 !important;
+}
+.difficult_3{
+    background-color:#FFEB3B !important;
+}
+.difficult_4{
+    background-color:#FF9800 !important;
+}
+.difficult_5{
+    background-color:#E53935 !important;
+}

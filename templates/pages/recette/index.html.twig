@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma page recettes{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% for message in app.flashes('success') %}
+            <div class="alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% if not recettes.items is same as([]) %}
+            <h1>Mes recettes</h1>
+            <div class="count">
+                {{ recettes.getTotalItemCount}} recettes en base de données
+            </div>
+            <a href="{{ path('recette.new') }}" class="btn btn-primary">Créer une recette</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col" {% if recettes.isSorted('a.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(recettes, 'Nom', 'a.name') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.price') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(recettes, 'Prix', 'a.price') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.people') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Nb de personnes', 'a.people') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.difficulty') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Difficulté', 'a.difficulty') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.time') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Temps de préparation', 'a.time') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.isfavorite') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Favoris', 'a.isfavorite') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.ingredients') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Ingredients', 'a.ingredients') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.description') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Déscription', 'a.description') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.createdate') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Creation', 'a.createdate') }}</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                    {% for item in recettes %}
+                <tbody>
+                    <tr class="table-success" {% if loop.index is odd %}class="color"{% endif %}>
+                        <th scope="row">{{item.name}}</th>
+                        <td>{{ item.price }}{{ (item.price) ? "€" : "N/A"}}</td>
+                        <td>{{(item.people) ? item.people : "N/A"}}</td>
+                        <td class="{{(item.difficulty) ? 'difficult_'~item.difficulty : ''}}"></td>
+                        <td>{{ item.time }} {{ (item.time) ? " minutes" : "N/A"}}</td>
+                        <td>{{ (item.isfavorite == 1) ? "OUI" : "NON" }}</td>
+                        <td>
+                            <ul>
+                                {% for ingredient in item.ingredients %}
+                                    <li>{{ ingredient.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        
+                        <td>{{item.description}}</td>
+                        <td>{{item.createdate | date("d/m/Y")}}</td>
+                        <td><a class="btn btn-info mt-4" href="{{ path('recette.edit', {id : item.id}) }}" >Modifier</a>{# <div {{ stimulus_controller('delete-html') }}> #} <a class="btn btn-warning mt-4" href="{{ path('recette.delete', {id : item.id}) }}" onclick="return confirm('Voulez vous vraiment effacer cet element ?')"{# {{ stimulus_action('delete-html', 'delete') }} #}>Supprimer</a>{# </div> #}</td>
+                    </tr>
+                </tbody>
+                    {% endfor %}
+            </table>
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(recettes) }}
+            </div>
+            {% else %}
+            <div class="count">
+                Aucun recettes en base de données
+            </div>
+        {% endif %}
+    </div>
+
+    <div {{ stimulus_controller('delete-html') }}>
+        <button {{ stimulus_action('delete-html', 'helloworld') }}>
+            Greet
+        </button>
+
+    </div>
+
+    <div {{ stimulus_controller('say-hello') }}>
+    <input type="text" {{ stimulus_target('say-hello', 'name') }}>
+
+    <button {{ stimulus_action('say-hello', 'greet') }}>
+        Greet
+    </button>
+
+    <div {{ stimulus_target('say-hello', 'output') }}></div>
+</div>
+
+{% endblock %}

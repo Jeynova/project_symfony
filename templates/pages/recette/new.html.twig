@@ -1,0 +1,77 @@
+{% extends 'base.html.twig'%}
+
+    {% block body %}
+        <div class="container">
+            <div>Creation d'une Recette</div>
+            {% for message in app.flashes('danger') %}
+                <div class="alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {{ form_start(form) }}
+                <div class="form-group row">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.name) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.price) }}
+                    {{ form_widget(form.price) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.price) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.time) }}
+                    {{ form_widget(form.time) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.time) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.people) }}
+                    {{ form_widget(form.people) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.people) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.difficulty) }}
+                    {{ form_widget(form.difficulty) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.difficulty) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.description) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="form-check">
+                        {{ form_widget(form.isfavorite) }}
+                        {{ form_label(form.isfavorite) }}
+                        </label>
+                    </div>
+                    <div class="form-errors">
+                        {{ form_errors(form.isfavorite) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_label(form.ingredients) }}
+                    {{ form_widget(form.ingredients) }}
+                    <div class="form-errors">
+                        {{ form_errors(form.ingredients) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    {{ form_row(form.submit,{ 'label': 'Créer la recette' }) }}
+                </div>
+            {{ form_end(form) }}
+
+        </div>
+    {% endblock %}
