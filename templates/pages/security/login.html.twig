@@ -9,6 +9,11 @@
                 <strong>Erreur lors de la connexion ! </strong> <span class="alert-link">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
             </div>
         {% endif %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
 
         <h1 class="mt-4">Formulaire de connexion</h1>
         <form action="{{ path('security.login') }}" method="post">

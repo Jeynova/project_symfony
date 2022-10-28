@@ -26,5 +26,10 @@ class UserListener
         );
         $user->setPassword($hashedPassword);
     }
+    
+    public function setRoleUser(User $user)
+    {
+        $user->setRoles(['ROLE_USER']);
+    }
 
 }

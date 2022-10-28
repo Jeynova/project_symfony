@@ -1,0 +1,13 @@
+{% extends 'base.html.twig'%}
+{% block title %}Inscription{% endblock %}
+{% block body %}
+    <div class="container">
+        {% for message in app.flashes('danger') %}
+            <div class="alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <h1>Formulaire d'inscription</h1>
+        {{ form(form) }}
+    </div>
+{% endblock %}
