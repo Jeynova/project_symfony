@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if error %}
+            <div class="alert alert-dismissible alert-danger">
+                <strong>Erreur lors de la connexion ! </strong> <span class="alert-link">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+            </div>
+        {% endif %}
+
+        <h1 class="mt-4">Formulaire de connexion</h1>
+        <form action="{{ path('security.login') }}" method="post">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="username" class="form-label mt-4">Login</label>
+                    <input type="email" name="_username" class="form-control" id="username" aria-describedby="emailHelp" placeholder="adresse@mail.com">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label mt-4">Password</label>
+                    <input type="password" name="_password" class="form-control" id="password" placeholder="*********">
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Se connecter</button>
+        </form>
+    </div>
+{% endblock %}

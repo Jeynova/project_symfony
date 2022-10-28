@@ -57,16 +57,11 @@ class AppFixtures extends Fixture
 
         for ($i=0; $i < 10; $i++) { 
             $user = new User();
-            $plaintextPassword = "password";
-            $hashedPassword = $this->passwordHasher->hashPassword(
-                $user,
-                $plaintextPassword
-            );
             $user->setFullName($this->faker->name())
                  ->setPseudo((mt_rand(0,1) == 1 ? $this->faker->firstName() : null))
                  ->setEmail($this->faker->email())
                  ->setRoles(["ROLE_USER"])
-                 ->setPassword($hashedPassword);
+                 ->setPlainPassword("Password");
             $manager->persist($user);
         }
         $manager->flush();
