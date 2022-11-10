@@ -21,6 +21,12 @@ class SecurityController extends AbstractController
         ]);
     } */
     #[Route('/connexion', name: 'security.login', methods: ['GET', 'POST'])]
+    /**
+     * Undocumented function
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -37,11 +43,23 @@ class SecurityController extends AbstractController
     }
 
     #[Route("/deconnexion", name: "security.logout")]
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function logout()
     {
     }
 
     #[Route("/inscription", name: "security.registration" ,methods :['GET','POST'])]
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     public function registration(Request $request, EntityManagerInterface $manager) : Response{
 
         $user = new User();

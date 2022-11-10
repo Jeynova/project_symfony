@@ -37,6 +37,13 @@ class RecetteController extends AbstractController
         ]);
     }
     #[Route('/recette/new', "recette.new", methods: ['GET', 'POST'])]
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $recettes = new Receipe();
@@ -70,6 +77,14 @@ class RecetteController extends AbstractController
         ]);
     }
     #[Route('/recette/edit/{id}', "recette.edit", methods: ['GET', 'POST'])]
+    /**
+     * Undocumented function
+     *
+     * @param Receipe $recettes
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     public function edit(Receipe $recettes, Request $request, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(ReceipeType::class, $recettes);
@@ -101,6 +116,13 @@ class RecetteController extends AbstractController
         ]);
     }
     #[Route('recettes/delete/{id}', 'recette.delete', methods: ['POST', 'GET'])]
+    /**
+     * Undocumented function
+     *
+     * @param EntityManagerInterface $manager
+     * @param Receipe $recette
+     * @return Response
+     */
     public function delete(EntityManagerInterface $manager, Receipe $recette): Response
     {
 

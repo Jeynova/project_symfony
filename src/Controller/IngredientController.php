@@ -39,6 +39,13 @@ class IngredientController extends AbstractController
     }
 
     #[Route('/ingredient/new', "ingredient.new", methods:['GET','POST'])]
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     public function new(Request $request, EntityManagerInterface $manager):Response
     {
     $ingredients = new Ingredient();
@@ -73,6 +80,14 @@ class IngredientController extends AbstractController
         ]);
     }
     #[Route('/ingredient/edit/{id}', "ingredient.edit", methods:['GET','POST'])]
+    /**
+     * Undocumented function
+     *
+     * @param Ingredient $ingredients
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     public function edit(Ingredient $ingredients,Request $request, EntityManagerInterface $manager) : Response{
         $form = $this->createForm(IngredientType::class, $ingredients);
 
@@ -104,6 +119,13 @@ class IngredientController extends AbstractController
         ]);
     }
     #[Route('ingredients/delete/{id}', 'ingredient.delete' ,methods:['POST','GET'])]
+    /**
+     * Undocumented function
+     *
+     * @param EntityManagerInterface $manager
+     * @param Ingredient $ingredient
+     * @return Response
+     */
     public function delete(EntityManagerInterface $manager,Ingredient $ingredient) : Response{
 
         if(!$ingredient){
