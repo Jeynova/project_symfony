@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,10 +53,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $createdat = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ingredient::class, orphanRemoval: true)]
+    private Collection $ingredients;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Receipe::class, orphanRemoval: true)]
+    private Collection $Receipe;
+
 
     public function __construct()
     {
         $this->createdat = new \DateTimeImmutable();
+        $this->ingredients = new ArrayCollection();
+        $this->Receipe = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -178,6 +188,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedat(\DateTimeImmutable $createdat): self
     {
         $this->createdat = $createdat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): self
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): self
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getUser() === $this) {
+                $ingredient->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Receipe>
+     */
+    public function getReceipe(): Collection
+    {
+        return $this->Receipe;
+    }
+
+    public function addReceipe(Receipe $receipe): self
+    {
+        if (!$this->Receipe->contains($receipe)) {
+            $this->Receipe->add($receipe);
+            $receipe->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceipe(Receipe $receipe): self
+    {
+        if ($this->Receipe->removeElement($receipe)) {
+            // set the owning side to null (unless already changed)
+            if ($receipe->getUser() === $this) {
+                $receipe->setUser(null);
+            }
+        }
 
         return $this;
     }

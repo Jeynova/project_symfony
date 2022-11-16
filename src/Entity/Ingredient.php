@@ -33,6 +33,10 @@ class Ingredient
     #[Assert\NotNull()]
     private ?DateTimeImmutable $carbon_in = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     /**
      * 
      * CONSTRUCTOR
@@ -80,6 +84,18 @@ class Ingredient
     public function setCarbonIn(?DateTimeImmutable $carbon_in): self
     {
         $this->carbon_in = $carbon_in;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

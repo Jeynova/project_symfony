@@ -25,6 +25,7 @@ class UserListener
             $plaintextPassword
         );
         $user->setPassword($hashedPassword);
+
     }
     
     public function setRoleUser(User $user)

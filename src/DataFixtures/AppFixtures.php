@@ -29,14 +29,27 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager) : void
     {
-        $ingredients = array();
+        $users = [];
+        for ($i=0; $i < 10; $i++) { 
+            $user = new User();
+            $user->setFullName($this->faker->name())
+                 ->setPseudo((mt_rand(0,1) == 1 ? $this->faker->firstName() : null))
+                 ->setEmail($this->faker->email())
+                 ->setPlainPassword("Password");
+            $users[] = $user;
+            $manager->persist($user);
+        }
+
+        $ingredients = [];
         for ($i=0; $i <=25 ; $i++) { 
             $ingredient = new Ingredient();
             $ingredient->setName($this->faker->word())
-                       ->setPrice($this->faker->randomFloat(1, 1, 100));
-                       $ingredients[]=$ingredient;
+                       ->setPrice($this->faker->randomFloat(1, 1, 100))
+                       ->setUser($users[mt_rand(0,count($users)-1)]);
+            $ingredients[]=$ingredient;
             $manager->persist($ingredient);
         }
+
         $receipe = new Receipe();
         for ($j=0; $j <=12 ; $j++) { 
             $receipe = new Receipe();
@@ -47,7 +60,8 @@ class AppFixtures extends Fixture
                        ->setDifficulty(mt_rand(0,1) == 1 ? mt_rand(1,5) : null)
                        ->setDescription($this->faker->text(300))
                        ->setPrice(mt_rand(0,1) == 1 ? mt_rand(1,1000) : null)
-                       ->setIsfavorite(mt_rand(0,1) == 1 ? 1 : 0);
+                       ->setIsfavorite(mt_rand(0,1) == 1 ? 1 : 0)
+                       ->setUser($users[mt_rand(0,count($users)-1)]);
                        
             for ($k=0; $k < mt_rand(5,15); $k++) { 
                 $receipe->addIngredient($ingredients[mt_rand(0,count($ingredients)-1)]);
@@ -55,14 +69,6 @@ class AppFixtures extends Fixture
             $manager->persist($receipe);
         }
 
-        for ($i=0; $i < 10; $i++) { 
-            $user = new User();
-            $user->setFullName($this->faker->name())
-                 ->setPseudo((mt_rand(0,1) == 1 ? $this->faker->firstName() : null))
-                 ->setEmail($this->faker->email())
-                 ->setPlainPassword("Password");
-            $manager->persist($user);
-        }
         $manager->flush();
     }
 
