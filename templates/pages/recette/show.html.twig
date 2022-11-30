@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ recette.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% for message in app.flashes('success') %}
+            <div class="alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <h1>{{ recette.name }}</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col" class="sorted">Prix</th>
+                <th scope="col" class="sorted">Nb de personnes</th>
+                <th scope="col" class="sorted">Difficulté</th>
+                <th scope="col" class="sorted">Temps de préparation</th>
+                <th scope="col" class="sorted">Ingredients</th>
+                <th scope="col" class="sorted">Déscription</th>
+                <th scope="col" class="sorted">Crée le</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-success">
+                    <td>{{ recette.price }}{{ (recette.price) ? "€" : "N/A"}}</td>
+                    <td>{{(recette.people) ? recette.people : "N/A"}}</td>
+                    <td class="{{(recette.difficulty) ? 'difficult_'~recette.difficulty : ''}}"></td>
+                    <td>{{ recette.time }} {{ (recette.time) ? " minutes" : "N/A"}}</td>
+                    <td>
+                        <ul>
+                            {% for ingredient in recette.ingredients %}
+                                <li><span class="badge bg-primary">{{ ingredient.name }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{recette.description}}</td>
+                    <td>{{recette.createdate | date("d/m/Y")}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

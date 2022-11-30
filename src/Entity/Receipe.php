@@ -52,6 +52,9 @@ class Receipe
 
     #[ORM\Column]
     private ?bool $isfavorite = null;
+    
+    #[ORM\Column]
+    private ?bool $isPublic = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Assert\NotNull()]
@@ -67,6 +70,7 @@ class Receipe
     #[ORM\ManyToOne(inversedBy: 'Receipe')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
 
     public function __construct()
     {
@@ -165,6 +169,18 @@ class Receipe
     public function setIsfavorite(bool $isfavorite): self
     {
         $this->isfavorite = $isfavorite;
+        
+        return $this;
+    }
+
+    public function isIsPublic(): ?bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): self
+    {
+        $this->isPublic = $isPublic;
 
         return $this;
     }
@@ -228,4 +244,5 @@ class Receipe
 
         return $this;
     }
+
 }

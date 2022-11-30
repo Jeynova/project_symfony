@@ -5,11 +5,33 @@
 {% block body %}
     <div class="container mt-4">
         <div class="jumbotron">
-            <h1 class="display-4">Bievenue Front Page</h1>
-            <p class="lead">Petit Test De Symfo.</p>
+            <h1 class="display-4">Bievenue Sur la page de recette de Jey</h1>
+            <p class="lead">Remise à niveau Symfo</p>
             <hr class="my-4">
-            <p>Prochaine etape inscription.</p>
-            <a class="btn btn-primary btn-lg" href="#" role="button">Inscription</a>
+            <p>Dernières recettes ajoutées.</p>
+
+            {% if not recettes.items is same as([]) %}
+                    <div class="row d-flex justify-content-between">
+                        {% for item in recettes %}
+                            <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+                                <div class="card-header">{{ item.createdate | date("d/m/Y")}}</div>
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ item.name }}</h4>
+                                    <p class="card-text">{{ item.description | slice(0,100)~ "..."}}<br></p>
+                                    <a class="btn btn-primary mt-4" href="{{ path('recette.show', {id : item.id}) }}" >Voir</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                <div class="navigation d-flex justify-content-center">
+                    {{ knp_pagination_render(recettes) }}
+                </div>
+                {% else %}
+                <div class="count">
+                    Aucun recettes en base de données
+                </div>
+            {% endif %}
+
         </div>
     </div>
 

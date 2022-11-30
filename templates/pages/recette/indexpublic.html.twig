@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Index des recettes{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% for message in app.flashes('success') %}
+            <div class="alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% if not recettes.items is same as([]) %}
+            <h1 class="d-flex justify-content-center">Index des recettes</h1>
+            <div class="count d-flex justify-content-center">
+                {{ recettes.getTotalItemCount}} recettes en base de données
+            </div>
+                <div class="row d-flex justify-content-center">
+                    {% for item in recettes %}
+                        <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+                            <div class="card-header">{{ item.createdate | date("d/m/Y")}}</div>
+                            <div class="card-body">
+                                <h4 class="card-title">{{ item.name }}</h4>
+                                <p class="card-text">{{ item.description | slice(0,100)~ "..."}}<br><a class="btn btn-primary mt-4" href="{{ path('recette.show', {id : item.id}) }}" >Voir</a></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(recettes) }}
+            </div>
+            {% else %}
+            <div class="count">
+                Aucun recettes en base de données
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

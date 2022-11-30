@@ -27,6 +27,7 @@
                     <th scope="col" {% if recettes.isSorted('a.ingredients') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Ingredients', 'a.ingredients') }}</th>
                     <th scope="col" {% if recettes.isSorted('a.description') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Déscription', 'a.description') }}</th>
                     <th scope="col" {% if recettes.isSorted('a.createdate') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Creation', 'a.createdate') }}</th>
+                    <th scope="col" {% if recettes.isSorted('a.isPublic') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(recettes, 'Public', 'a.isPublic') }}</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -49,7 +50,8 @@
                         
                         <td>{{item.description}}</td>
                         <td>{{item.createdate | date("d/m/Y")}}</td>
-                        <td><a class="btn btn-info mt-4" href="{{ path('recette.edit', {id : item.id}) }}" >Modifier</a>{# <div {{ stimulus_controller('delete-html') }}> #} <a class="btn btn-warning mt-4" href="{{ path('recette.delete', {id : item.id}) }}" onclick="return confirm('Voulez vous vraiment effacer cet element ?')"{# {{ stimulus_action('delete-html', 'delete') }} #}>Supprimer</a>{# </div> #}</td>
+                        <td>{{(item.isPublic) == 1 ? "OUI" : "NON"}}</td>
+                        <td><a class="btn btn-info mt-4" href="{{ path('recette.edit', {id : item.id}) }}" >Modifier</a>{# <div {{ stimulus_controller('delete-html') }}> #} <a class="btn btn-warning mt-4" href="{{ path('recette.delete', {id : item.id}) }}" onclick="return confirm('Voulez vous vraiment effacer cet element ?')"{# {{ stimulus_action('delete-html', 'delete') }} #}>Supprimer</a>{# </div> #}<a class="btn btn-primary mt-4" href="{{ path('recette.show', {id : item.id}) }}" >Voir</a></td>
                     </tr>
                 </tbody>
                     {% endfor %}

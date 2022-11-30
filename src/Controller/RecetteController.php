@@ -150,4 +150,29 @@ class RecetteController extends AbstractController
 
         return $this->redirectToRoute('recette.index');
     }
+
+    #[Route('recettes/show/{id}', 'recette.show', methods: ['GET'])]
+    #[Security("user === recette.getUser() or recette.isIsPublic() == 1")]
+    public function show(EntityManagerInterface $manager, Receipe $recette): Response
+    {
+
+        return $this->render('pages/recette/show.html.twig', [
+            'controller_name' => 'RecetteController',
+            'recette'         => $recette
+        ]);
+    }
+
+    #[Route('recettes/index', 'recette.index', methods: ['GET'])]
+    public function indexPublic(ReceipeRepository $repository,PaginatorInterface $paginator,Request $request): Response
+    {
+        $recettes = $paginator->paginate(
+            $repository->findPublicreceipe(null),
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+        return $this->render('pages/recette/indexpublic.html.twig', [
+            'controller_name' => 'RecetteController',
+            'recettes'         => $recettes
+        ]);
+    }
 }

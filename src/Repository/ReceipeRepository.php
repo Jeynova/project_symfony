@@ -6,6 +6,8 @@ use App\Entity\Receipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function PHPUnit\Framework\isNull;
+
 /**
  * @extends ServiceEntityRepository<Receipe>
  *
@@ -37,6 +39,22 @@ class ReceipeRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPublicreceipe(?int $nbReceipes): array
+    {
+        $query =  $this->createQueryBuilder('r')
+                    ->andWhere('r.isPublic = :val')
+                    ->setParameter('val', 1)
+                    ->orderBy('r.createdate', 'DESC ');
+
+        if(!isNull($nbReceipes) || $nbReceipes !== 0){
+            $query->setMaxResults($nbReceipes);
+        }
+
+        return $query->getQuery()
+                     ->getResult();
+
     }
 
 //    /**
