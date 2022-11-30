@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Receipe;
 use App\Form\ReceipeType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Read Receipes
@@ -23,6 +25,7 @@ use App\Form\ReceipeType;
 class RecetteController extends AbstractController
 {
     #[Route('/recette', name: 'recette.index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(ReceipeRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $repository->findBy(["user" => $this->getUser()]);
@@ -37,6 +40,7 @@ class RecetteController extends AbstractController
         ]);
     }
     #[Route('/recette/new', "recette.new", methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     /**
      * Undocumented function
      *
@@ -78,6 +82,7 @@ class RecetteController extends AbstractController
         ]);
     }
     #[Route('/recette/edit/{id}', "recette.edit", methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_USER') and user === recettes.getUser()")]
     /**
      * Undocumented function
      *
@@ -117,6 +122,7 @@ class RecetteController extends AbstractController
         ]);
     }
     #[Route('recettes/delete/{id}', 'recette.delete', methods: ['POST', 'GET'])]
+    #[Security("is_granted('ROLE_USER') and user === recette.getUser()")]
     /**
      * Undocumented function
      *

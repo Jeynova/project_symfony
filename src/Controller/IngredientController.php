@@ -7,6 +7,8 @@ use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +25,7 @@ class IngredientController extends AbstractController
      * @return Response
      */
     #[Route('/ingredient', name: 'ingredient.index', methods:['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
         /* $ingredients = $repository->findAll(); */
@@ -39,6 +42,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route('/ingredient/new', "ingredient.new", methods:['GET','POST'])]
+    #[IsGranted('ROLE_USER')]
     /**
      * Undocumented function
      *
@@ -81,6 +85,7 @@ class IngredientController extends AbstractController
         ]);
     }
     #[Route('/ingredient/edit/{id}', "ingredient.edit", methods:['GET','POST'])]
+    #[Security("is_granted('ROLE_USER') and user === ingredients.getUser()")]
     /**
      * Undocumented function
      *
@@ -120,6 +125,7 @@ class IngredientController extends AbstractController
         ]);
     }
     #[Route('ingredients/delete/{id}', 'ingredient.delete' ,methods:['POST','GET'])]
+    #[Security("is_granted('ROLE_USER') and user === ingredients.getUser()")]
     /**
      * Undocumented function
      *

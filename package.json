@@ -19,5 +19,13 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "autosize": "^5.0.1",
+        "bootstrap": "^5.2.2",
+        "bootswatch": "^5.2.2",
+        "expose-loader": "^4.0.0",
+        "jquery-ui": "^1.13.2",
+        "popper.js": "^1.16.1"
     }
 }

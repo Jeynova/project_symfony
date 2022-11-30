@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Form\UserPasswordType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,22 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/utilisateur/edition/{id}', name: 'user.edit',methods:['GET','POST'])]
+    #[Security("is_granted('ROLE_USER') and user === entityUser")]
     /**
      * Undocumented function
      *
-     * @param User $user
+     * @param User $entityUser
      * @param EntityManagerInterface $manager
      * @param Request $request
      * @return Response
      */
-    public function edit(User $user,EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $hasher): Response
+    public function edit(User $entityUser,EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $hasher): Response
     {
 
-        if(!$this->getUser() || $this->getUser() !== $user){
-            return $this->redirectToRoute('security.login');
-        }
-
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $entityUser);
 
         $form->handleRequest($request);
 
@@ -40,9 +38,9 @@ class UserController extends AbstractController
 
             if ($form->isValid()) {
 
-                if($hasher->isPasswordValid($user, $form->getData()->getPlainPassword())){
-                    $utilisateur = $form->getData();
-                    $manager->persist($utilisateur);
+                if($hasher->isPasswordValid($entityUser, $form->getData()->getPlainPassword())){
+                    $entityUser = $form->getData();
+                    $manager->persist($entityUser);
     
                     $manager->flush();
                     $this->addFlash(
@@ -56,7 +54,7 @@ class UserController extends AbstractController
                         'danger',
                         'Mot de passe incorrect'
                     );
-                    return $this->redirectToRoute("user.edit", ['id' => $user->getId()]);
+                    return $this->redirectToRoute("user.edit", ['id' => $entityUser->getId()]);
                 }
                 
             } else {
@@ -74,11 +72,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/utilisateur/editpass/{id}', name : 'user.edit.password', methods: ['GET','POST'])]
-    public function editPassword(User $user,EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $hasher): Response
+    #[Security("is_granted('ROLE_USER') and user === entityUser")]
+    public function editPassword(User $entityUser,EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $hasher): Response
     {
-        if(!$this->getUser() || $this->getUser() !== $user){
-            return $this->redirectToRoute('security.login');
-        }
 
         $form = $this->createForm(UserPasswordType::class);
         $form->handleRequest($request);
@@ -88,11 +84,12 @@ class UserController extends AbstractController
 
             if ($form->isValid()) {
 
-                if($hasher->isPasswordValid($user, $form->getData()["plainPassword"])){
-                    $user->setPassword("change");
-                    $user->setPlainPassword($form->getData()["newPassword"]);
+                if($hasher->isPasswordValid($entityUser, $form->getData()["plainPassword"])){
+                    $entityUser->setPassword("change");
+                    $entityUser->setCreatedat(new \DateTimeImmutable());
+                    $entityUser->setPlainPassword($form->getData()["newPassword"]);
 
-                    $manager->persist($user);
+                    $manager->persist($entityUser);
     
                     $manager->flush();
                     $this->addFlash(
@@ -106,7 +103,7 @@ class UserController extends AbstractController
                         'danger',
                         'Mot de passe incorrect'
                     );
-                    return $this->redirectToRoute("user.edit.password", ['id' => $user->getId()]);
+                    return $this->redirectToRoute("user.edit.password", ['id' => $entityUser->getId()]);
                 }
                 
             } else {
@@ -114,7 +111,7 @@ class UserController extends AbstractController
                     'danger',
                     'Il y a eu une erreur lors de la modification !'
                 );
-                return $this->redirectToRoute("user.edit.password",['id' => $user->getId()]);
+                return $this->redirectToRoute("user.edit.password",['id' => $entityUser->getId()]);
             }
         }
         return $this->render('pages/user/edit_password.html.twig', [
